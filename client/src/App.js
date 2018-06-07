@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from './images/logo.svg';
+import './styles/App.css';
+
+import Sidebar from './components/Sidebar';
+import Header from "./components/Header";
+import CalendarC from "./components/CalendarC";
+import Timeslots from "./components/Timeslots";
+import Footer from "./components/Footer";
+
+
 
 class App extends Component {
     state = {
         response: ''
     };
+
+    loadHalls(){
+
+    }
 
     componentDidMount() {
         this.callApi()
@@ -23,16 +35,26 @@ class App extends Component {
     };
 
     render() {
+        var halls = ["W001","W002","4th floor","Mini audi","Irque lab","LabA","LabB","LabC","LabD"];
         return (
             <div className="App">
-            <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        </div>
+
+                <Header />
+                <div className="row">
+                    <div id="sidebar" className="col-sm-2">
+                        <Sidebar halls= {halls}/>
+                    </div>
+                    <div className="col-sm-10">
+                        < CalendarC/>
+                    </div>
+
+                </div>
+                <Footer/>
+
+
+
+
+            </div>
     );
     }
 }
