@@ -10,7 +10,7 @@ import Footer from "./components/Footer";
 
 
 
-class App extends Component {
+export default class App extends Component {
     state = {
         response: ''
     };
@@ -59,4 +59,9 @@ class App extends Component {
     }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        CalenderC: state.calendaerReducer,
+        shedule: state.hallReducer
+    };
+}
