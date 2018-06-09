@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 import logo from './images/logo.svg';
 import './styles/App.css';
 
@@ -7,32 +7,12 @@ import Header from "./components/Header";
 import CalendarC from "./components/CalendarC";
 import Timeslots from "./components/Timeslots";
 import Footer from "./components/Footer";
+import { connect } from 'react-redux';
 
 
 
-export default class App extends Component {
-    state = {
-        response: ''
-    };
+class App extends Component {
 
-    loadHalls(){
-
-    }
-
-    componentDidMount() {
-        this.callApi()
-            .then(res => this.setState({ response: res.express }))
-            .catch(err => console.log(err));
-    }
-
-    callApi = async () => {
-        const response = await fetch('/api/hello');
-        const body = await response.json();
-
-        if (response.status !== 200) throw Error(body.message);
-
-        return body;
-    };
 
     render() {
         var halls = ["W001","W002","4th floor","Mini audi","Irque lab","LabA","LabB","LabC","LabD"];
@@ -48,6 +28,9 @@ export default class App extends Component {
                         < CalendarC/>
                     </div>
 
+
+
+
                 </div>
                 <Footer/>
 
@@ -62,6 +45,23 @@ export default class App extends Component {
 const mapStateToProps = (state) => {
     return {
         CalenderC: state.calendaerReducer,
-        shedule: state.hallReducer
+        Sidebar: state.hallReducer
     };
-}
+};
+
+ const mapDispatchToProps = (distpatch) => {
+     return {
+
+         setday: (hall) => {
+             console.log("you clikced");
+             distpatch(
+                 {
+                     type: "change_hall",
+                     payload: hall
+                 }
+             );
+         }
+     };
+ };
+
+export default connect(mapStateToProps , mapDispatchToProps)(App);
