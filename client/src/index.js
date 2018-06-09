@@ -5,19 +5,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 
 import registerServiceWorker from './registerServiceWorker';
-//
-//
 
-// const root = document.getElementById('root');
-//
-// ReactDOM.render(
-//
-//         <App/>
-//    ,
-//     root);
-//
-// registerServiceWorker();
-//
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 
@@ -29,7 +17,7 @@ const calendaerReducer = (state = {
          case "change_day":
              state = {
                  ...state,
-                 day: state.day,
+                 day: "2010",
                  lastValues: [...state.lastValues , action.payload]
              };
              break;
@@ -42,10 +30,10 @@ const calendaerReducer = (state = {
      lastValues: []
  }, action) => {
      switch (action.type){
-         case "change_day":
+         case "change_hall":
              state = {
                  ...state,
-                 day: state.day,
+                 hall: state.day,
                  lastValues: [...state.lastValues , action.payload]
              };
              break;
@@ -61,16 +49,11 @@ const calendaerReducer = (state = {
  const store = createStore(
      combineReducers({calendaerReducer, hallReducer}),
      {},
-     applyMiddleware(myLogger, logger())
+     applyMiddleware(myLogger, logger)
  );
 
  store.subscribe(() => {
      console.log("Stroe updated" , store.getState());
- });
-
- store.dispatch({
-     type: "change_day",
-     payload: 123
  });
 
 
@@ -81,5 +64,7 @@ const calendaerReducer = (state = {
           <App/>
       </Provider>,
   root);
+
+registerServiceWorker();
 
 
