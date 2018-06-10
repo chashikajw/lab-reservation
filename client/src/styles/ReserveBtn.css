@@ -1,0 +1,7 @@
+
+.modal-dialog {
+    transform: translate(0, -50%);
+    top: 50%;
+    margin: 0 auto;
+    padding: 0px 100px 0px 0px;
+}

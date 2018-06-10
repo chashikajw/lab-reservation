@@ -23,3 +23,22 @@ body {
 #copyrights{
     padding: 10px 5px 10px 5px;
 }
+
+nav-pills  a:visited {
+    background-color: #5685e4;
+    color: rgb(36, 36, 35);
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+
+nav-pills a:hover, a:active {
+    background-color: #5685e4;
+}
+
+nav-pills a:visited {
+    color: #fcfff6;
+    background-color:#5685e4;
+}

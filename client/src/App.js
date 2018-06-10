@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import CalendarC from "./components/CalendarC";
 import Timeslots from "./components/Timeslots";
 import Footer from "./components/Footer";
+import ReserveBtn from "./components/ReserveBtn";
 
 
 
@@ -21,6 +22,7 @@ class App extends Component {
             <div className="App">
 
                 <Header />
+                <ReserveBtn/>
                 <div className="row">
                     <div id="sidebar" className="col-sm-2">
                         <Sidebar/>
