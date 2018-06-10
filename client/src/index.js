@@ -5,10 +5,18 @@ import App from './App';
 import { Provider } from 'react-redux';
 
 import registerServiceWorker from './registerServiceWorker';
+import allReducers from './reducers/index'
 
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import {combineReducers } from 'redux';
+import HallReducer from './reducers/reducer-halls';
+
+
+
+
+import { createStore,  applyMiddleware } from 'redux';
 import logger from 'redux-logger';
 
+/*
 const calendaerReducer = (state = {
     day: new Date(),
      lastValues: []
@@ -50,12 +58,11 @@ const calendaerReducer = (state = {
      combineReducers({calendaerReducer, hallReducer}),
      {},
      applyMiddleware(myLogger, logger)
- );
+*/
 
- store.subscribe(() => {
-     console.log("Stroe updated" , store.getState());
- });
 
+
+const store = createStore(allReducers);
 
   const root = document.getElementById('root');
 
