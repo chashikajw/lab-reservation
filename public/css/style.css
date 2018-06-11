@@ -42,3 +42,12 @@ nav-pills a:visited {
     color: #fcfff6;
     background-color:#5685e4;
 }
+
+#signup{
+    background-color: rgba(235, 241, 225, 0.72);
+    padding: 20px 20px 20px 20px;
+    margin: auto;
+    width: 35%;
+
+
+}
