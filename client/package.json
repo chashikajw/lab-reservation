@@ -2,8 +2,9 @@
   "name": "lab-reservation",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000/",
+  "proxy": "http://localhost:5000",
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "history": "^1.17.0",
     "react": "^16.4.0",
     "react-calendar": "^2.15.1",

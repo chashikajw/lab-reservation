@@ -19,12 +19,23 @@ class CalendarC extends Component {
         }
     }
 
-    componentDidMount(){
+    /*componentDidMount(){
         fetch('api/bookings')
             .then(res => res.json)
             .then(bookings => this.setState({bookings}, () => console.log("bookings fetched..", bookings) ));
-    }
+    }*/
 
+    componentDidMount() {
+        fetch('/api/bookings')
+            .then(res => {
+                console.log(res);
+                return res.json()
+            })
+            .then(bookings => {
+                console.log(bookings);
+                this.setState({ bookings})
+            });
+    }
 
     onChange = date => this.setState({date})
 
