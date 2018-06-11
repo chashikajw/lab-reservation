@@ -4,36 +4,52 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressHbs = require('express-handlebars');
+var mongoose = require('mongoose');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var indexRouter = require('./routes/index');
 
 
 var app = express();
 
-app.get('/api/bokings', (req, res) => {
-    bookings(
-        {
-            "sites":
-                [
-                    {
-                        "siteName": "JQUERY4U",
-                        "domainName": "http://www.jquery4u.com",
-                        "description": "#1 jQuery Blog for your Daily News, Plugins, Tuts/Tips &amp; Code Snippets."
-                    },
-                    {
-                        "siteName": "BLOGOOLA",
-                        "domainName": "http://www.blogoola.com",
-                        "description": "Expose your blog to millions and increase your audience."
-                    },
-                    {
-                        "siteName": "PHPSCRIPTS4U",
-                        "domainName": "http://www.phpscripts4u.com",
-                        "description": "The Blog of Enthusiastic PHP Scripters"
-                    }
-                ]
-        });
+mongoose.connect('mongodb://localhost:27017/lab_reservation');
+var db = mongoose.connection;
+
+//handle mongo error
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    console.log("connected to the database");
+});
+
+//use sessions for tracking logins
+app.use(session({
+    secret: 'work hard',
+    resave: true,
+    saveUninitialized: false,
+    store: new MongoStore({
+        mongooseConnection: db
+    })
+}));
+
+app.get('/api/bookings', (req, res) => {
+    res.json([{
+        id: 1,
+        name: "Hiccup",
+        password: 'hiccup'
+    }, {
+        id: 2,
+        name: "King Arthur",
+        password: 'king-arthur'
+    }, {
+        id: 1,
+        name: "Hiccup",
+        password: 'hiccup'
+    }
+    ]);
 
 });
+
 
 
 
@@ -51,6 +67,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
 
 app.use('/', indexRouter);
 
