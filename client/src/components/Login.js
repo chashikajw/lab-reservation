@@ -4,6 +4,35 @@ import logo from './../images/ucsclogo.jpg';
 
 class Login extends Component {
 
+    constructor(){
+        super();
+
+        this.state = {
+            date: new Date(),
+            bookings: [],
+            month: new Date().getDay()
+        }
+    }
+
+    componentDidMount() {
+
+
+        fetch('/api/searchBokkings/W001/2018-06-25T17:51:59.038Z')
+            .then(res => {
+                console.log(res);
+                return res.json()
+            })
+            .then(bookings => {
+
+                this.state.bookings = bookings;
+                this.setState({ bookings})
+            });
+
+        console.log(this.props.avtivehall);
+        console.log(this.props.activeday);
+    }
+
+
     render() {
         return (
             <div className="Login">

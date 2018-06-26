@@ -1,4 +1,4 @@
-export default function (state = "cja", action) {
+export default function (state = "no date", action) {
     switch (action.type){
         case "DATE_SELECTED":
             return action.payload;

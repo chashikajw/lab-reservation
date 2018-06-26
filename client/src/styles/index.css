@@ -4,5 +4,15 @@ body {
   font-family: sans-serif;
     font-size: 20px ;
   padding: 1% 5% 1% 5%;
+  background-color: #ebf1e1;
 }
 
+.reserbtn{
+
+  top: 0px;
+  right: 100px;
+}
+
+select {
+  height:100px;
+}

@@ -1,41 +1,103 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
+import { connect } from 'react-redux';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
 import './../styles/ReserveBtn.css';
 
 
-class ReserveBtn extends Component{
-    render(){
-        return(
-            <div className="Reservebtn">
+import ReservationForm from "./ReservationForm";
+
+const customStyles = {
+    content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)'
+
+    }
+};
+
+// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
+//Modal.setAppElement('#App')
+
+class ReserveBtn extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+            modalIsOpen: false,
+
+        };
+
+        this.openModal = this.openModal.bind(this);
+        this.afterOpenModal = this.afterOpenModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
 
 
-                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Launch demo modal
-                </button>
+    }
+    openModal() {
+        this.setState({modalIsOpen: true});
+    }
+
+    afterOpenModal() {
+        // references are now sync'd and can be accessed.
+        this.subtitle.style.color = '#0008e4';
+    }
+
+    closeModal() {
+        this.setState({modalIsOpen: false});
+    }
 
 
-                <div className="modal fade" id="exampleModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div className="modal-body">
-                                ...
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary">Save changes</button>
-                            </div>
-                        </div>
+
+
+
+    render() {
+        const {signUpRequest } = this.props;
+        return (
+            <div >
+                <button className="btn btn-success" onClick={this.openModal}>Make Reservation</button>
+
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onAfterOpen={this.afterOpenModal}
+                    onRequestClose={this.closeModal}
+                    style={customStyles}
+                    contentLabel="Example Modal"
+                >
+                    <div className="Modal">
+
+                        <button id = "x" onClick={this.closeModal}>
+                            X
+                        </button>
+
+                        <h2 ref={subtitle => this.subtitle = subtitle}>-----------------<b>Make Reservation</b>-----------------</h2>
+
+
+                        <ReservationForm />
                     </div>
-                </div>
+                </Modal>
 
             </div>
         );
     }
 }
 
-export default ReserveBtn;
+
+function mapStateToProps(state) {
+    return{
+        halls: state.halls
+
+    };
+
+
+}
+
+
+
+export default connect(mapStateToProps)(ReserveBtn);

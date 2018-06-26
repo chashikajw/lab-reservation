@@ -15,29 +15,27 @@ class CalendarC extends Component {
         super();
         this.state = {
             date: new Date(),
-            bookings: []
+            bookings: [],
+            test: [1,2],
+            month: new Date().getDay()
         }
     }
 
-    /*componentDidMount(){
-        fetch('api/bookings')
-            .then(res => res.json)
-            .then(bookings => this.setState({bookings}, () => console.log("bookings fetched..", bookings) ));
-    }*/
 
-    componentDidMount() {
-        fetch('/api/bookings')
-            .then(res => {
-                console.log(res);
-                return res.json()
-            })
-            .then(bookings => {
-                console.log(bookings);
-                this.setState({ bookings})
-            });
+
+
+
+    onChange = month => this.props.selectDay(this.state.month);
+
+    changday(){
+        this.props.selectDay(this.state.month);
     }
 
-    onChange = date => this.setState({date})
+
+
+
+
+
 
 
 
@@ -57,43 +55,15 @@ class CalendarC extends Component {
                         </div>
 
                             <Calendar
-                                onChange = {this.onChange}
-                                onClick={() =>this.props.selectDay("20100")}
+                                onClick={() =>this.props.selectDay(this.state.month.bind(this))}
+
                                 value={this.state.date}
 
                             />
 
-
                     </div>
-                    <div id = "shed" className="col-sm-6">
-                        {(() => {
-                            if ("LabA" == this.props.activehall) {
-                                return <p>{this.props.activehall}</p>;
-
-                            }
-                            else{
-                                return <p>{this.props.activehall}</p>;
-                                {console.log("adoo")}
-                            }
-                        })()}
-                        <Shedule >
-                            {(() => {
-                                if ("2018" == this.state.date.getFullYear().toString()) {
-                                    return <p>{this.state.date.getFullYear().toString()} / {this.state.date.getMonth().toString()} / {this.state.date.getDate().toString()} </p>;
-
-                                }
-                                else{
-                                    return <h3 className="text-center">
-                                        No events</h3>;
-
-                                }
-                            })()}
 
 
-
-
-                        </Shedule>
-                    </div>
 
             </div>
         );

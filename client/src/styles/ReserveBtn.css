@@ -5,3 +5,20 @@
     margin: 0 auto;
     padding: 0px 100px 0px 0px;
 }
+
+#x {
+    position: absolute;
+    background: #4a615a;
+    color: white;
+    top: 25px;
+    right: 0px;
+}
+
+#modelbody{
+    background: #9fa596;
+}
+
+.Modal {
+
+
+}

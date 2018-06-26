@@ -8,7 +8,7 @@ var reservations = [
             date_time: "2018/06/25 10-12",
             reserve_person: "chashika weerathung",
             reason: "book hall 2",
-            permission_by: "Chamath sir",
+            permissonedby: "Chamath sir",
             is_accepted: true
 
         }
@@ -18,7 +18,7 @@ var reservations = [
             date_time: "2018/06/25 10-12",
             reserve_person: "chashika weerathung",
             reason: "book hall 2",
-            permission_by: "Chamath sir",
+            permissonedby: "Chamath sir",
             is_accepted: true
 
         }
@@ -28,7 +28,7 @@ var reservations = [
             date_time: "2018/06/25 10-12",
             reserve_person: "chashika weerathung",
             reason: "book hall 2",
-            permission_by: "Chamath sir",
+            permissonedby: "Chamath sir",
             is_accepted: true
 
         }
