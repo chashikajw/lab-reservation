@@ -104,9 +104,10 @@ class ReservationForm extends Component {
                                     <option value="11">11</option>
                                     <option value="12">12</option>
                                 </select>
-                                {errors.timefrom && <span className="help-block">{errors.timefrom}</span>}
+
 
                             </div>
+
                             <div className={classnames("form-group", {'has-error':errors.timefrom})}>
                                 <label htmlFor="inputState">to</label>
                                 <select id="inputState" className="form-control" value={this.state.timeto}  name="timeto"  onChange={this.onChange}>
@@ -127,6 +128,11 @@ class ReservationForm extends Component {
 
                             </div>
 
+
+
+                        </div>
+                        <div className="error">
+                            {errors.timefrom && <span className="help-block">{errors.timefrom}</span>}
 
                         </div>
                         <div className="form-row">

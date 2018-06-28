@@ -62,15 +62,16 @@ app.get('/api/bookings', (req, res) => {
 
 app.post('/api/searchBookings', (req,res,next) => {
 
-    var date = req.body.reservation.Date.toString();
+    var date = req.body.reservation.Date.substr(0,10).trim();
     var hall = req.body.reservation.hallname;
     console.log(date);
-    console.log(hall);
+
     reservationData.find(
         {
             $and :
             [
-                {"hallname": hall }
+                {"hallname": hall},
+                {"Date": date }
 
 
             ]
@@ -112,43 +113,43 @@ function validateInput(frm,to,hall,date){
                 },
                 {
                     $or : [
-                        {
-                            "timefrom" : {$gt: frm, $gt: to}
-                            },
-                        {
-                            "timeto" : {$lt: frm, $lt: to}
-                            },
+                               {
+                             "timefrom": {$gt: frm, $lt:to}
+                         },
+                         {
+                             "timeto": {$gt: frm, $gt: to}
+                         },
                         {
                             $and:
                             [
-                                {
-                                    "timefrom" : {$lt: frm, $gt: to}
-                                },
-                                {
-                                    "timeto" : {$lt: frm, $lt: to}
-                                },
+                                 {
+                                     "timefrom": {$lt: frm, $lt:to}
+                                 },
+                                 {
+                                     "timeto": {$gt: frm, $gt: to}
+                                 },
+                            ]
+                        },
+                        {
+                            $and:
+                            [
+                                  {
+                                     "timefrom": {$lt: frm, $lt:to}
+                                 },
+                                 {
+                                     "timeto": {$gt: frm, $lt: to}
+                                 },
                             ]
                         },
                         {
                             $and:
                             [
                                 {
-                                    "timefrom" : {$gt: frm, $gt: to}
-                                },
-                                {
-                                    "timeto" : {$lt: frm, $gt: to}
-                                },
-                            ]
-                        },
-                        {
-                            $and:
-                            [
-                                {
-                                    "timefrom" : {$gt: frm, $gt: to}
-                                },
-                                {
-                                    "timeto" : {$lt: frm, $lt: to}
-                                },
+                                     "timefrom": {$gt: frm, $lt:to}
+                                 },
+                                 {
+                                     "timeto": {$gt: frm, $lt: to}
+                                 },
                             ]
                         },
                     ]
@@ -168,19 +169,18 @@ function validateInput(frm,to,hall,date){
                 if(res.length > 0){
 
                     errors.timefrom = "this time is already booked";
-                    return {
+                    /*return {
                         errors,
                         isValid: false
-                    }
+                    }*/
+                    //res.json(errors);
+                    console.log(errors);
 
                     res.json(errors);
                 }else{
                     //res.json({success: true});
-                    return {
-                        errors,
-                        isValid: true
-                    }
                     res.json(errors);
+                    //res.json(errors);
                 }
             }
         }
@@ -193,37 +193,126 @@ function validateInput(frm,to,hall,date){
 app.post('/api/reservations', (req,res,next) =>{
         var frm = req.body.reservation.timefrom;
         var to = req.body.reservation.timeto;
-        var date = req.body.reservation.Date;
+        var date = req.body.reservation.Date.substr(0, 10).trim();
         var hall = req.body.reservation.hallname;
-       /* const { errors, isValid} = validateInput(frm,to,hall,date);
-        if (!isValid){
+        //validateInput(frm,to,hall,date);
 
-            res.json(errors);
-        }*/
+    //reservation validation
+    reservationData.find(
+         {
+             $and: [
+                 {
+                     "hallname" : hall
+                 },
+                 {
+                     "Date" : date
+                 },
+                 {
+                     $or : [
+                         {
+                         $and: [
+                             {
+                                 "timefrom": {$gt: frm, $lt:to}
+                             },
+                             {
+                                 "timeto": {$gt: frm, $gt: to}
+                             },
+                         ]
+
+                     },
+
+                         {
+                             $and:
+                             [
+                                  {
+                                      "timefrom": {$lt: frm, $lt:to}
+                                  },
+                                  {
+                                      "timeto": {$gt: frm, $gt: to}
+                                  },
+                             ]
+                         },
+                         {
+                             $and:
+                             [
+                                   {
+                                      "timefrom": {$lt: frm, $lt:to}
+                                  },
+                                  {
+                                      "timeto": {$gt: frm, $lt: to}
+                                  },
+                             ]
+                         },
+                         {
+                             $and:
+                             [
+                                 {
+                                      "timefrom": {$gt: frm, $lt:to}
+                                  },
+                                  {
+                                      "timeto": {$gt: frm, $lt: to}
+                                  },
+                             ]
+                         },
+                     ]
+                 },
+
+             ]
+         },
+        function (err,data) {
+            console.log(data.length);
+            let errors = {};
+            if(err){
+                console.log(err);
+            }else{
 
 
-    var Reservation  =  {
-            email: req.body.reservation.email,
-            hallname: req.body.reservation.hallname,
-            Date: req.body.reservation.Date.toString(),
-            timeto: req.body.reservation.timeto,
-            timefrom: req.body.reservation.timefrom,
-            reserve_person: req.body.reservation.reserve_person,
-            reason: req.body.reservation.reason,
-            permissonedby: req.body.reservation.permissonedby,
-            is_accepted: req.body.reservation.is_accepted
+                if(data.length > 0){
 
-        }
+                    errors.timefrom = "this time is already booked";
 
 
-        reservationData.create(Reservation, function (error, reservation) {
-            if (error) {
-                //console.log(error);
-                return next(error);
-            } else {
-                console.log("succefully inserted");
+                   // console.log(errors, "error");
+
+                    res.json(errors);
+                }else{
+                    //res.json({success: true});
+                    //insert reservation
+
+                    var Reservation  =  {
+                        email: req.body.reservation.email,
+                        hallname: req.body.reservation.hallname,
+                        Date: req.body.reservation.Date.substr(0, 10).trim(),
+                        timeto: req.body.reservation.timeto,
+                        timefrom: req.body.reservation.timefrom,
+                        reserve_person: req.body.reservation.reserve_person,
+                        reason: req.body.reservation.reason,
+                        permissonedby: req.body.reservation.permissonedby,
+                        is_accepted: req.body.reservation.is_accepted
+
+                    }
+
+
+                    reservationData.create(Reservation, function (error, reservation) {
+                        if (error) {
+                            //console.log(error);
+                            return next(error);
+                        } else {
+                            console.log("succefully inserted");
+                        }
+                    });
+
+                    res.json(errors);
+                    //res.json(errors);
+                    console.log(errors, "succes");
+                }
             }
-        });
+        }
+    );
+
+
+
+
     //console.log(req.body.reservation.email);
 });
 
@@ -234,6 +323,7 @@ app.post('/api/reservations', (req,res,next) =>{
 
 app.engine('.hbs', expressHbs({defaultLayout: 'layout' , extname: '.hbs'}));
 app.set('view engine', '.hbs');
+
 
 
 

@@ -1,22 +1,38 @@
+<div id="accordion">
 
-{{# each reservations}}
-    {{#unless this.is_accepted}}
+
+    {{# each reservations}}
+        {{#unless this.is_accepted}}
         <div class="card text-center">
             <div class="card-header">
-                {{this.hallname}}
+                {{this.hallname}}&nbsp; &nbsp;&nbsp; &nbsp;
+                {{this.Date}} &nbsp; &nbsp; {{this.timefrom}}am-{{this.timeto}}am
             </div>
-            <h2></h2>
-           <div class="card-body">
+            <div class="card-body">
+                <table ">
 
-                <p class="card-text">t{{this.reason}}</p>
-               <h5 class="card-title">{{this.reserve_person}}</h5>
-               <h5 class="card-title">3rd year student</h5>
-                <a href="acceptReservation/{{this.id}}" class="btn btn-success">Accept</a>
-                <a href="#" class="btn btn-danger">Reject</a>
+                <tbody>
+                <tr>
+
+                    <td>{{this.reason}}&nbsp; &nbsp;&nbsp; &nbsp;</td>
+                    <td>{{this.reserve_person}}&nbsp; &nbsp;&nbsp; &nbsp;</td>
+                    <td>{{this.email}}&nbsp; &nbsp;&nbsp; &nbsp;</td>
+                    <td><a href="/acceptReservation/{{this.id}}" class="btn btn-success">Accept</a>&nbsp; &nbsp;</td>
+                    <td><a href="/RejectReservation/{{this.id}}" class="btn btn-danger">Reject</a></td>
+
+                </tr>
+                </tbody>
+                </table>
+
+
+
+
             </div>
             <div class="card-footer text-muted">
-               2018/06/22 &nbsp; &nbsp; 10am-12am
-            </div>
-    {{/unless}}
 
-{{/each}}
+            </div>
+        {{/unless}}
+
+    {{/each}}
+
+</div>

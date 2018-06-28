@@ -68,7 +68,7 @@ class Shedule extends Component {
                                         var indents = [];
                                         for(var i=0; this.state.bookings.length > i; i++){
                                             if (this.props.avtivehall.name== this.state.bookings[i].hallname) {
-                                                indents.push(<p>{this.state.bookings[i].timefrom}-{this.state.bookings[i].timeto}&nbsp; &nbsp;
+                                                indents.push(<p>{this.state.bookings[i].timefrom}.00 - {this.state.bookings[i].timeto}.00&nbsp; &nbsp;
                                                     {this.state.bookings[i].reserve_person}&nbsp; &nbsp;<a  className="btn btn-danger btn-sm">Booked</a> </p>);
 
 

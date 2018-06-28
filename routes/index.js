@@ -22,18 +22,7 @@ function requiresLogin(req, res, next) {
     }
 }
 
-router.put('/acceptReservation/:id',function () {
-    var id = req.params.id;
-    Reservations.findById(id, function (err, Object) {
-        if (err) return handleError(err);
 
-        Object.is_accepted = true;
-        Object.save(function (err, updatedObject) {
-            if (err) return handleError(err);
-            res.send(updatedObject);
-        });
-    });
-})
 
 /*router.put('/acceptReservation/:id', function (req,res) {
     var id = req.params.id;
@@ -79,6 +68,8 @@ router.get('/api/getreservations', function(req, res, next) {
     });
 
 });
+
+
 
 
 
@@ -154,9 +145,12 @@ router.get('/', function (req, res, next) {
                 return next(error);
             } else {
                 if (user === null) {
-                    var err = new Error('Not authorized! Go back!');
+                    /*var err = new Error('Not authorized! Go back!');
                     err.status = 400;
-                    return next(err);
+                    return next(err);*/
+                    Reservations.find(function (err,docs) {
+                        res.render('index', {reservations: docs, layout: 'layout.hbs' });
+                    });
                 } else {
 
                     Reservations.find(function (err,docs) {
@@ -219,6 +213,35 @@ router.get('/signin*', function (req, res, next) {
     res.render('signin', { title: 'Express', layout: 'signup.hbs' });
 
 });
+
+router.get('/acceptReservation/:id',function (req, res, next) {
+    var id = req.params.id;
+    Reservations.findById(id, function (err, Object) {
+        if (err) return handleError(err);
+
+        Object.is_accepted = true;
+        Object.save(function (err, updatedObject) {
+            if (err) return handleError(err);
+            //res.send(updatedObject);
+            return res.redirect('/');
+        });
+    });
+})
+
+router.get('/RejectReservation/:id', function(req, res, next) {
+    var id = req.params.id;
+
+    Reservations.remove({ _id: id }, function(err) {
+        if (!err) {
+            return res.redirect('/');
+        }
+        else {
+            console.log("error in deleting");
+        }
+    });
+
+});
+
 
 
 module.exports = router;

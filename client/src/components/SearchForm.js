@@ -113,15 +113,28 @@ class SearchForm extends Component {
                                     if(this.state.bookings.length ==0){
                                         <Shedule/>
                                     }else{
+
                                         var indents = [];
                                         for(var i=0; this.state.bookings.length > i; i++){
+                                            if(this.state.bookings[i].is_accepted){
+                                                indents.push( <tr>
+                                                    <td >{this.state.bookings[i].timefrom}.00</td>
+                                                    <td>{this.state.bookings[i].timeto}.00</td>
+                                                    <td>{this.state.bookings[i].reason}</td>
 
-                                            indents.push( <tr>
-                                                <th scope="row">{this.state.bookings[i].timefrom}</th>
-                                                <td>{this.state.bookings[i].timeto}</td>
-                                                <td>{this.state.bookings[i].reason}</td>
-                                                <td> <button type="submit" className="btn btn-danger">Booked</button></td>
-                                            </tr>);
+                                                    <td> <button type="submit" className="btn btn-danger">Booked</button></td>
+                                                </tr>);
+                                            }else{
+                                                indents.push( <tr>
+                                                    <td >{this.state.bookings[i].timefrom}.00</td>
+                                                    <td>{this.state.bookings[i].timeto}.00</td>
+                                                    <td>{this.state.bookings[i].reason}</td>
+
+                                                    <td> <button type="submit" className="btn btn-warning">Pending</button></td>
+                                                </tr>);
+                                            }
+
+
 
 
 
