@@ -58,18 +58,49 @@ class Shedule extends Component {
                            </h3>
 
 
+                        <table className="table">
 
-                        <div className="panel-body">
-                            <ul>
+                            <tbody>
+
+
+                            <div className="panel-body">
+
 
                                     {(() => {
 
 
                                         var indents = [];
+                                        indents.push(<thead>
+                                        <tr>
+                                            <th scope="col">From</th>
+                                            <th scope="col">To</th>
+                                            <th scope="col">Reason</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                        </thead>);
                                         for(var i=0; this.state.bookings.length > i; i++){
                                             if (this.props.avtivehall.name== this.state.bookings[i].hallname) {
-                                                indents.push(<p>{this.state.bookings[i].timefrom}.00 - {this.state.bookings[i].timeto}.00&nbsp; &nbsp;
-                                                    {this.state.bookings[i].reserve_person}&nbsp; &nbsp;<a  className="btn btn-danger btn-sm">Booked</a> </p>);
+                                                if(this.state.bookings[i].is_accepted){
+
+
+                                                    indents.push( <tr>
+                                                        <td >{this.state.bookings[i].timefrom}.00</td>
+                                                        <td>{this.state.bookings[i].timeto}.00</td>
+                                                        <td>{this.state.bookings[i].reason}</td>
+
+                                                        <td> <button type="submit" className="btn btn-danger">Booked</button></td>
+                                                    </tr>);
+
+                                                }else{
+                                                    indents.push( <tr>
+                                                        <td >{this.state.bookings[i].timefrom}.00</td>
+                                                        <td>{this.state.bookings[i].timeto}.00</td>
+                                                        <td>{this.state.bookings[i].reason}</td>
+
+                                                        <td> <button type="submit" className="btn btn-warning">Pending</button></td>
+                                                    </tr>);
+
+                                                }
 
 
                                             }
@@ -86,14 +117,14 @@ class Shedule extends Component {
                                     })()}
 
 
-                            </ul>
 
-                            {this.props.activedayt}
+
+                            </div></tbody></table>
 
 
 
             </div>
-                    </div></div></div>
+                    </div></div>
 
         );
     }

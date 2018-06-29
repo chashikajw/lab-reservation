@@ -23,11 +23,7 @@ export default function () {
             name: "Mini audi",
             book_days: []
         },
-        {
-            id: 5,
-            name: "W002",
-            book_days: []
-        },
+
         {
             id: 6,
             name: "Irque lab",

@@ -34,6 +34,7 @@ class Login extends Component {
 
 
     render() {
+        const {errors} = this.state;
         return (
             <div className="Login">
                 <form className="form-signin" id="signup" action="/login" method="POST">

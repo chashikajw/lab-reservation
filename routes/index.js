@@ -4,6 +4,7 @@ var app = express();
 var User = require('../models/User');
 var Reservations = require('../models/reservation');
 var Validator = require('validator');
+const PDFDocument = require('pdfkit');
 
 
 
@@ -241,6 +242,25 @@ router.get('/RejectReservation/:id', function(req, res, next) {
     });
 
 });
+
+
+router.post('/pdf', (req, res) => {
+    const doc = new PDFDocument()
+    let filename = "asasasa"
+    // Stripping special characters
+    filename = encodeURIComponent(filename) + '.pdf'
+    // Setting response to 'attachment' (download).
+    // If you use 'inline' here it will automatically open the PDF
+    res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"')
+    res.setHeader('Content-type', 'application/pdf')
+    const content = "adooooo"
+    doc.y = 300
+    doc.text(content, 50, 50)
+    doc.pipe(res)
+    doc.end()
+})
+
+
 
 
 

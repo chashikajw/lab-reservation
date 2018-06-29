@@ -60,8 +60,8 @@ class ReserveBtn extends Component {
     render() {
         const {signUpRequest } = this.props;
         return (
-            <div >
-                <button className="btn btn-success" onClick={this.openModal}>Make Reservation</button>
+            <div id="reservbtn">
+                <button className="btn btn-success"  onClick={this.openModal}>Make Reservation</button>
 
                 <Modal
                     isOpen={this.state.modalIsOpen}

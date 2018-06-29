@@ -109,12 +109,22 @@ class SearchForm extends Component {
 
                                 <tbody>
 
+
                                 {(() => {
                                     if(this.state.bookings.length ==0){
                                         <Shedule/>
                                     }else{
 
                                         var indents = [];
+
+                                        indents.push(<thead>
+                                        <tr>
+                                            <th scope="col">From</th>
+                                            <th scope="col">To</th>
+                                            <th scope="col">Reason</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                        </thead>);
                                         for(var i=0; this.state.bookings.length > i; i++){
                                             if(this.state.bookings[i].is_accepted){
                                                 indents.push( <tr>

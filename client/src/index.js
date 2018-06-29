@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './styles/index.css';
 import App from './App';
+import Home from './Home';
 import Login from './components/Login';
+import Register from './components/Register'
 import Header from './components/Header';
 import { Provider } from 'react-redux';
 

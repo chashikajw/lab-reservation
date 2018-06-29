@@ -10,6 +10,10 @@ import Footer from "./components/Footer";
 import ReserveBtn from "./components/ReserveBtn";
  import Shedule from "./components/Shedule";
  import SearchForm from "./components/SearchForm";
+ import {Route, Router, browserHistory, IndexRoute} from "react-router";
+ import Home from './Home';
+ import Login from "./components/Login";
+ import Register from "./components/Register";
 
 
 
@@ -21,46 +25,12 @@ class App extends Component {
     render() {
 
         return (
-            <div className="App">
+            <Router history={browserHistory}>
+                <Route path={"/home"} component={Home}/>
+                <Route path={"/SignUp"} component={Register}/>
+                <Route path={"/Login"} component={Login}/>
 
-                <Header />
-
-                <div className="row">
-                    <div id="reserbtn" className="col-sm-6">
-                        <ReserveBtn/>
-                    </div>
-
-                </div>
-                <div className="row">
-                    <div id="sidebar" className="col-sm-2">
-                        <Sidebar/>
-                    </div>
-                    <div className="col-sm-10">
-
-                        < CalendarC/>
-                        <div id = "shed" className="col-sm-6">
-
-                            <SearchForm/>
-                            <Shedule/>
-
-
-
-
-                        </div>
-
-
-                    </div>
-
-
-
-
-                </div>
-                <Footer/>
-
-
-
-
-            </div>
+            </Router>
     );
     }
 }

@@ -9,10 +9,14 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var bodyParser = require('body-parser');
 var reservationData = require('./models/reservation');
+var ClientUser = require('./models/User');
 
 var indexRouter = require('./routes/index');
 var reservations = require('./routes/reservations');
 var Validator = require('validator');
+const jsreport = require('jsreport');
+const PDFDocument = require('pdfkit');
+var phantom = require('phantom');
 
 
 
@@ -316,6 +320,14 @@ app.post('/api/reservations', (req,res,next) =>{
     //console.log(req.body.reservation.email);
 });
 
+app.post('/generateReport',(req, res) => {
+    jsreport.render("<h1>Hello world</h1>").then((out) => {
+        out.stream.pipe(res);
+    }).catch((e) => {
+        res.end(e.message);
+    });
+});
+
 
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
@@ -337,6 +349,56 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 
+app.post('/api/client/register', function (req,res,next) {
+    var email = req.body.userdetails.email;
+    var username = req.body.userdetails.username;
+    var password = req.body.userdetails.password;
+    var passwordConf = req.body.userdetails.passwordConf;
+
+
+    ClientUser.find(
+        {
+            $or: [
+                {"username": username}
+            ]
+        },
+        {
+            $or: [
+                {"email": email}
+            ]
+
+    },
+        function (err, data) {
+            let errors = {};
+            if(data.length > 0){
+                errors.username = "username already taken";
+                res.json(errors);
+            }else{
+
+
+                    var userData = {
+                        email: email,
+                        username: username,
+                        password: password,
+                        passwordConf: passwordConf,
+                    }
+
+                ClientUser.create(userData, function (error, user) {
+                        if (error) {
+                            return next(error);
+                        } else {
+                            console.log("inserted user");
+
+                        }
+                    });
+
+        }
+});
+
+
+
+
+})
 
 
 
@@ -356,4 +418,24 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
+
+phantom.create().then(function(ph) {
+    ph.createPage().then(function(page) {
+        page.open("http://www.google.com").then(function(status) {
+            page.render('google.pdf').then(function() {
+                console.log('Page Rendered');
+                ph.exit();
+            });
+        });
+    });
+});
+
+
+app.post('/asset', function(request, response){
+    var tempFile="/home/applmgr/Desktop/123456.pdf";
+    fs.readFile(tempFile, function (err,data){
+        response.contentType("application/pdf");
+        response.send(data);
+    });
+});
 module.exports = app;
