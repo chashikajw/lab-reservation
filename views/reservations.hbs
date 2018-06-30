@@ -1,10 +1,15 @@
 
-<div id="accordion">
+
+
+<!--Add External Libraries - JQuery and jspdf
+check out url - https://scotch.io/@nagasaiaytha/generate-pdf-from-html-using-jquery-and-jspdf
+-->
+
 
 
     {{# each reservations}}
         {{#if this.is_accepted}}
-            <div class="card">
+            <div class="card" id="content">
                 <div class="card-header">
                     <a class="collapsed card-link" data-toggle="collapse" href="#collapse{{this.id}}">
                         <b>{{this.hallname}}</b> &nbsp; &nbsp; {{this.Date}}&nbsp; &nbsp; {{this.timefrom}} - {{this.timeto}}
@@ -17,13 +22,46 @@
                         <b>reason</b>: {{this.reason}}<br>
                         <b>reasorver email</b>: {{this.email}}<br>
 
-                        <a href="#" class="btn btn-primary">Generate Report</a>
-                        <a href="/RejectReservation/{{this.id}}" class="btn btn-danger">Delete</a>
+
                     </div>
                 </div>
             </div>
-            {{/if}}
+            <a href="#" id="cmd" class="btn btn-primary">Generate Report</a>
+            <a href="/RejectReservation/{{this.id}}" class="btn btn-danger">Delete</a>
+
+            <div id="editor"></div>
+
+            <!--Add External Libraries - JQuery and jspdf
+            check out url - https://scotch.io/@nagasaiaytha/generate-pdf-from-html-using-jquery-and-jspdf
+            -->
+
+
+
+        {{/if}}
 
     {{/each}}
 
 </div>
+
+
+<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
+<script>
+    var doc = new jsPDF();
+    var specialElementHandlers = {
+        '#editor': function (element, renderer) {
+            return true;
+        }
+    };
+
+    $('#cmd').click(function () {
+        doc.fromHTML($('#content').html(), 15, 15, {
+            'width': 170,
+            'elementHandlers': specialElementHandlers
+        });
+        doc.save('sample-file.pdf');
+    });
+
+    // This code is collected but useful, click below to jsfiddle link.
+
+</script>

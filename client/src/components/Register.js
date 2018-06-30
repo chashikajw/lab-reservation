@@ -53,13 +53,17 @@ class Register extends Component {
             e.preventDefault();
             axios.post('/api/client/register',  {userdetails: this.state})
                 .then(res => {
-                   console.log(res.data);
+                   console.log(Object.keys(res.data).length);
+
                    this.setState({errors:res.data, isLoading: false});
-                   console.log(res.data);
+                   if(Object.keys(res.data).length == 0){
+                       browserHistory.push('/home');
+                   }
+
                    //browserHistory.push('/home');
 
        })
-               /* .then(
+                /*.then(
                     () => {
                         browserHistory.push('/home');
                     }

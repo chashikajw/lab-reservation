@@ -314,9 +314,7 @@ function validateInput(data){
     }
 
     else if(data.username){
-        ClientUser.find({username:data.username}).fetch().then(user =>{
-            if(user) {errors.username ='Username is alredy taken';}
-        });
+
 
     }
 
@@ -341,10 +339,30 @@ app.post('/api/client/register', function (req,res,next) {
 
     }
 
+})
 
 
+app.post('/api/client/login', function (req, res, next) {
 
 
+    if (req.body.userdetails.email && req.body.userdetails.password) {
+        User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
+            if (error || !user) {
+                var err = new Error('Wrong email or password.');
+                err.status = 401;
+                return next(err);
+            } else {
+                req.session.userId = user._id;
+                //return res.redirect('/signup', { username: user.username, email:user.email, layout: 'layout.hbs' });
+                return res.redirect('/');
+                //return res.render('index', { username: user.username, email:user.email, layout: 'layout.hbs' });
+            }
+        });
+    } else {
+        var err = new Error('All fields required.');
+        err.status = 400;
+        return next(err);
+    }
 })
 
 

@@ -260,6 +260,14 @@ router.post('/pdf', (req, res) => {
 })
 
 
+router.get('/pdf*', function (req, res, next) {
+    //req.app.locals.layout = 'signup'; // set your layout here
+
+    res.render('pdf', { title: 'Express', layout: 'signup.hbs' });
+
+});
+
+
 
 
 
