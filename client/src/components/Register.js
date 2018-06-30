@@ -19,7 +19,7 @@ class Register extends Component {
             password: '',
             name: '',
             passwordconf: '',
-
+            isLoading: false,
             errors: {}
 
         };
@@ -49,20 +49,21 @@ class Register extends Component {
 
     onSubmit(e) {
 
-            this.setState({errors: {}});
+            this.setState({errors: {}, isLoading:true});
             e.preventDefault();
             axios.post('/api/client/register',  {userdetails: this.state})
                 .then(res => {
-                    console.log(res.data);
-                    this.setState({errors:res.data});
-                    console.log(res.data);
+                   console.log(res.data);
+                   this.setState({errors:res.data, isLoading: false});
+                   console.log(res.data);
+                   //browserHistory.push('/home');
 
-                })
-                .then(
+       })
+               /* .then(
                     () => {
                         browserHistory.push('/home');
                     }
-                )
+                )*/
 
 
 
@@ -85,6 +86,8 @@ class Register extends Component {
                         <h1 className="h3 mb-3 font-weight-normal"><b>Sign Up</b></h1>
                     <div className={classnames("form-group", {'has-error':errors.username})}>
                         {errors.username && <span className="help-block">{errors.username}</span>}
+                    </div>
+                    <div className={classnames("form-group", {'has-error':errors.password})}>
                         {errors.password && <span className="help-block">{errors.password}</span>}
                     </div>
 
@@ -100,12 +103,12 @@ class Register extends Component {
                             <input id="inputUsername" name="username" className="form-control" placeholder="username" name="username"  value={this.state.username} onChange={this.onChange}
                                    required autoFocus="" type="text"></input>
                     </div>
-                    <div className={classnames("form-group", {'has-error':errors.username})}>
+                    <div className={classnames("form-group", {'has-error':errors.password})}>
                                 <label className="sr-only" htmlFor="inputPassword">Password</label>
                                 <input id="inputPassword" name="password" className="form-control" value={this.state.password} onChange={this.onChange}
                                        placeholder="password" required autoFocus="" type="password"></input>
                     </div>
-                    <div className={classnames("form-group", {'has-error':errors.username})}>
+                    <div className={classnames("form-group", {'has-error':errors.password})}>
                                     <label className="sr-only" htmlFor="inputPasswordConf">Password</label>
                                     <input id="inputPasswordConf" name="passwordConf" value={this.state.passwordConf} className="form-control" onChange={this.onChange}
                                            placeholder="confirm password" required autoFocus="" type="password"></input>
@@ -118,7 +121,7 @@ class Register extends Component {
                                                     Remember me
                                             </label>
                                         </div>
-                                        <button className="btn btn-lg btn-primary btn-block" type="submit">Sign In
+                                        <button disabled={this.state.isLoading} className="btn btn-lg btn-primary btn-block" type="submit">Sign In
                                         </button>
                     <br></br>
 

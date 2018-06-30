@@ -95,104 +95,7 @@ app.post('/api/getreservations', function(req, res, next) {
 
 });
 
-function isEmpty(arr) {
-    if(arr.length== 0){
-        return true;
-    }else{
-        return false;
-    }
 
-}
-
-function validateInput(frm,to,hall,date){
-
-    reservationData.find(
-       /* {
-            $and: [
-                {
-                    "hallname" : hall
-                },
-                {
-                    "Date" : date
-                },
-                {
-                    $or : [
-                               {
-                             "timefrom": {$gt: frm, $lt:to}
-                         },
-                         {
-                             "timeto": {$gt: frm, $gt: to}
-                         },
-                        {
-                            $and:
-                            [
-                                 {
-                                     "timefrom": {$lt: frm, $lt:to}
-                                 },
-                                 {
-                                     "timeto": {$gt: frm, $gt: to}
-                                 },
-                            ]
-                        },
-                        {
-                            $and:
-                            [
-                                  {
-                                     "timefrom": {$lt: frm, $lt:to}
-                                 },
-                                 {
-                                     "timeto": {$gt: frm, $lt: to}
-                                 },
-                            ]
-                        },
-                        {
-                            $and:
-                            [
-                                {
-                                     "timefrom": {$gt: frm, $lt:to}
-                                 },
-                                 {
-                                     "timeto": {$gt: frm, $lt: to}
-                                 },
-                            ]
-                        },
-                    ]
-                },
-
-            ]
-        },*/
-        {"hallname" : hall},
-        {"Date" : date},
-        function (err,res) {
-            let errors = {};
-            if(err){
-                console.log(err);
-            }else{
-                console.log(res);
-
-                if(res.length > 0){
-
-                    errors.timefrom = "this time is already booked";
-                    /*return {
-                        errors,
-                        isValid: false
-                    }*/
-                    //res.json(errors);
-                    console.log(errors);
-
-                    res.json(errors);
-                }else{
-                    //res.json({success: true});
-                    res.json(errors);
-                    //res.json(errors);
-                }
-            }
-        }
-    );
-
-
-
-}
 
 app.post('/api/reservations', (req,res,next) =>{
         var frm = req.body.reservation.timefrom;
@@ -349,51 +252,95 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 
+function isEmpty(arr) {
+    if(arr.length== 0){
+        return true;
+    }else{
+        return false;
+    }
+
+}
+
+function uniqueUsername(username) {
+
+    var isUnique = true;
+    ClientUser.find(
+        {
+            "username": username
+        },
+        function (err, data) {
+            if(data.length > 0){
+                console.log(data.length);
+                isUnique = false;
+            }else{
+                console.log(data.length);
+                isUnique = true;
+            }
+        });
+
+    return isUnique;
+
+}
+
+function insertUser() {
+
+    var userData = {
+        email: email,
+        username: username,
+        password: password,
+        passwordConf: passwordConf,
+    }
+
+    ClientUser.create(userData, function (error, user) {
+        if (error) {
+            return next(error);
+        } else {
+            console.log("inserted user");
+
+        }
+    });
+
+}
+
+
+function validateInput(data){
+    let errors = {};
+
+    if(data.password!=data.passwordConf){
+        errors.password = 'Password is not matching';
+    }
+    else if(data.password.length < 5){
+        errors.password = 'Password should be atleast 6 characters';
+    }
+
+    else if(data.username){
+        ClientUser.find({username:data.username}).fetch().then(user =>{
+            if(user) {errors.username ='Username is alredy taken';}
+        });
+
+    }
+
+    return{
+        errors,
+        isValid: isEmpty(errors)
+    }
+
+
+}
+
 app.post('/api/client/register', function (req,res,next) {
     var email = req.body.userdetails.email;
     var username = req.body.userdetails.username;
     var password = req.body.userdetails.password;
     var passwordConf = req.body.userdetails.passwordConf;
 
+    const {errors, isValid} = validateInput(req.body.userdetails);
 
-    ClientUser.find(
-        {
-            $or: [
-                {"username": username}
-            ]
-        },
-        {
-            $or: [
-                {"email": email}
-            ]
+    if(!isValid){
+        res.json(errors);
 
-    },
-        function (err, data) {
-            let errors = {};
-            if(data.length > 0){
-                errors.username = "username already taken";
-                res.json(errors);
-            }else{
+    }
 
-
-                    var userData = {
-                        email: email,
-                        username: username,
-                        password: password,
-                        passwordConf: passwordConf,
-                    }
-
-                ClientUser.create(userData, function (error, user) {
-                        if (error) {
-                            return next(error);
-                        } else {
-                            console.log("inserted user");
-
-                        }
-                    });
-
-        }
-});
 
 
 

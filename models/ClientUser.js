@@ -45,7 +45,7 @@ UserSchema.statics.authenticate = function (email, password, callback) {
         });
 }
 
-//hashin password
+//hashing password
 UserSchema.pre('save', function (next) {
     var user = this;
     bcrypt.hash(user.password, 10, function (err, hash){
@@ -58,6 +58,4 @@ UserSchema.pre('save', function (next) {
 });
 
 
-
-var User = mongoose.model('User', UserSchema);
-module.exports = User;
+module.exports = mongoose.model('ClientUser', UserSchema);

@@ -146,12 +146,10 @@ router.get('/', function (req, res, next) {
                 return next(error);
             } else {
                 if (user === null) {
-                    /*var err = new Error('Not authorized! Go back!');
+                    var err = new Error('Not authorized! Go back!');
                     err.status = 400;
-                    return next(err);*/
-                    Reservations.find(function (err,docs) {
-                        res.render('index', {reservations: docs, layout: 'layout.hbs' });
-                    });
+                    return next(err);
+
                 } else {
 
                     Reservations.find(function (err,docs) {
@@ -174,15 +172,16 @@ router.get('/reservations', function(req, res, next) {
 router.post('/login', function (req, res, next) {
 
 
-    if (req.body.email && req.body.password) {
-        User.authenticate(req.body.email, req.body.password, function (error, user) {
+    if (req.body.logemail && req.body.logpassword) {
+        User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
             if (error || !user) {
                 var err = new Error('Wrong email or password.');
                 err.status = 401;
                 return next(err);
             } else {
                 req.session.userId = user._id;
-                return res.redirect('/', { username: user.username, email:user.email, layout: 'layout.hbs' });
+                //return res.redirect('/signup', { username: user.username, email:user.email, layout: 'layout.hbs' });
+                return res.redirect('/');
                 //return res.render('index', { username: user.username, email:user.email, layout: 'layout.hbs' });
             }
         });
