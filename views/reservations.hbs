@@ -18,15 +18,16 @@ check out url - https://scotch.io/@nagasaiaytha/generate-pdf-from-html-using-jqu
                 </div>
                 <div id="collapse{{this.id}}" class="collapse" data-parent="#accordion">
                     <div class="card-body">
-                        <b>reserve person</b>:  {{this.reserve_person}} <br>
-                        <b>reason</b>: {{this.reason}}<br>
-                        <b>reasorver email</b>: {{this.email}}<br>
+                        <b>reserve person</b>:  {{this.reserve_person}}
+                        <b>permisioned by</b>: {{this.permissonedby}}
+                        <b>reason</b>: {{this.reason}}
+                        <b>reasorver email</b>: {{this.email}}
 
 
                     </div>
                 </div>
             </div>
-            <a href="#" id="cmd" class="btn btn-primary">Generate Report</a>
+            <a href="/pdf/{{this.hallname}}/{{this.Date}}/{{this.timefrom}}/{{this.timeto}}/{{this.reserve_person}}/{{this.reason}}/{{this.permissonedby}}" id="cmd" class="btn btn-primary">Generate Report</a>
             <a href="/RejectReservation/{{this.id}}" class="btn btn-danger">Delete</a>
 
             <div id="editor"></div>
@@ -43,25 +44,3 @@ check out url - https://scotch.io/@nagasaiaytha/generate-pdf-from-html-using-jqu
 
 </div>
 
-
-<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script>
-<script>
-    var doc = new jsPDF();
-    var specialElementHandlers = {
-        '#editor': function (element, renderer) {
-            return true;
-        }
-    };
-
-    $('#cmd').click(function () {
-        doc.fromHTML($('#content').html(), 15, 15, {
-            'width': 170,
-            'elementHandlers': specialElementHandlers
-        });
-        doc.save('sample-file.pdf');
-    });
-
-    // This code is collected but useful, click below to jsfiddle link.
-
-</script>

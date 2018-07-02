@@ -260,12 +260,29 @@ router.post('/pdf', (req, res) => {
 })
 
 
-router.get('/pdf*', function (req, res, next) {
+router.get('/pdf', function (req, res, next) {
     //req.app.locals.layout = 'signup'; // set your layout here
 
     res.render('pdf', { title: 'Express', layout: 'signup.hbs' });
 
 });
+
+
+router.get('/pdf/:hallname/:date/:timefrom/:timeto/:reserverperson/:reason/:permissionedby', function (req, res, next) {
+    //req.app.locals.layout = 'signup'; // set your layout here
+
+    var hallname = req.params.hallname;
+    var date = req.params.date;
+    var timefrom = req.params.timefrom;
+    var timeto = req.params.timeto;
+    var reserverperson = req.params.reserverperson;
+    var reason = req.params.reason;
+    var permissionedby = req.params.permissionedby;
+
+    res.render('pdf', { title: 'Express',hallname: hallname, date:date, timefrom:timefrom, timeto:timeto, reserveperson:reserverperson, reason: reason, permissionedby: permissionedby, layout: 'signup.hbs' });
+
+});
+
 
 
 
