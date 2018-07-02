@@ -27,7 +27,7 @@ class App extends Component {
         return (
             <Router history={browserHistory}>
                 <Route path={"/home"} component={Home}/>
-                <Route path={"/SignUp"} component={Register}/>
+                <Route path={"/"} component={Register}/>
                 <Route path={"/Login"} component={Login}/>
 
             </Router>

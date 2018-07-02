@@ -57,8 +57,24 @@ class ReservationForm extends Component {
         axios.post('/api/reservations',  {reservation: this.state})
         .then(res => {
             console.log(res.data);
-            this.setState({errors:res.data})
+            this.setState({errors:res.data});
+            console.log(Object.keys(this.state.errors).length);
+            if(Object.keys(this.state.errors).length == 0){
+                this.setState({   email: '',
+                    hallname: '',
+                    permissonedby: '',
+                    reason: '',
+                    timeto: '',
+                    timefrom: '',});
+
+
+            }
+
         })
+
+
+
+
 
 
         //this.props.signUpRequest(this.state)

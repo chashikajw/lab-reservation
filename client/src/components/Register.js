@@ -5,6 +5,7 @@ import moment from "moment/moment";
 import axios from "axios/index";
 import classnames from "classnames";
 import {browserHistory} from 'react-router';
+import Login from "./Login";
 
 class Register extends Component {
 
@@ -129,7 +130,7 @@ class Register extends Component {
                                         </button>
                     <br></br>
 
-                                            Already sign up? <a href="/signin">Login</a>
+                                            Already sign up? <a href="/Login">Login</a>
 
 
                 </form>

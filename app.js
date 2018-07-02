@@ -17,6 +17,7 @@ var Validator = require('validator');
 const jsreport = require('jsreport');
 const PDFDocument = require('pdfkit');
 var phantom = require('phantom');
+var User = require('./models/User');
 
 
 
@@ -114,52 +115,75 @@ app.post('/api/reservations', (req,res,next) =>{
                  {
                      "Date" : date
                  },
+
                  {
                      $or : [
                          {
-                         $and: [
-                             {
-                                 "timefrom": {$gt: frm, $lt:to}
-                             },
-                             {
-                                 "timeto": {$gt: frm, $gt: to}
-                             },
-                         ]
-
-                     },
-
-                         {
                              $and:
-                             [
-                                  {
-                                      "timefrom": {$lt: frm, $lt:to}
-                                  },
-                                  {
-                                      "timeto": {$gt: frm, $gt: to}
-                                  },
-                             ]
+                                 [
+                                     {
+                                         "timefrom": frm
+                                     },
+                                     {
+                                         "timeto": {$gt: frm, $lt: to}
+                                     },
+                                 ]
                          },
                          {
                              $and:
-                             [
-                                   {
-                                      "timefrom": {$lt: frm, $lt:to}
-                                  },
-                                  {
-                                      "timeto": {$gt: frm, $lt: to}
-                                  },
-                             ]
+                                 [
+                                     {
+                                         "timefrom": {$gt: frm, $lt:to}
+                                     },
+                                     {
+                                         "timeto": {$gt: frm, $lt: to}
+                                     },
+                                 ]
                          },
                          {
                              $and:
-                             [
-                                 {
-                                      "timefrom": {$gt: frm, $lt:to}
-                                  },
-                                  {
-                                      "timeto": {$gt: frm, $lt: to}
-                                  },
-                             ]
+                                 [
+                                     {
+                                         "timefrom": {$lt: frm, $lt:to}
+                                     },
+                                     {
+                                         "timeto": {$gt: frm, $lt: to}
+                                     },
+                                 ]
+                         },
+                         {
+                             $and:
+                                 [
+                                     {
+                                         "timefrom": {$lt: frm, $lt:to}
+                                     },
+                                     {
+                                         "timeto": {$gt: frm, $gt: to}
+                                     },
+                                 ]
+                         },
+
+                         {
+                             $and:
+                                 [
+                                     {
+                                         "timefrom": {$gt: frm, $lt:to}
+                                     },
+                                     {
+                                         "timeto": {$gt: frm, $gt: to}
+                                     },
+                                 ]
+                         },
+                         {
+                             $and:
+                                 [
+                                     {
+                                         "timefrom": frm
+                                     },
+                                     {
+                                         "timeto": to
+                                     },
+                                 ]
                          },
                      ]
                  },
@@ -173,8 +197,14 @@ app.post('/api/reservations', (req,res,next) =>{
                 console.log(err);
             }else{
 
+                if(frm > to){
+                    errors.timefrom = "enter a valid time period";
 
-                if(data.length > 0){
+
+                    res.json(errors);
+                }
+
+                else if(data.length > 0){
 
                     errors.timefrom = "this time is already booked";
 
@@ -282,25 +312,6 @@ function uniqueUsername(username) {
 
 }
 
-function insertUser() {
-
-    var userData = {
-        email: email,
-        username: username,
-        password: password,
-        passwordConf: passwordConf,
-    }
-
-    ClientUser.create(userData, function (error, user) {
-        if (error) {
-            return next(error);
-        } else {
-            console.log("inserted user");
-
-        }
-    });
-
-}
 
 
 function validateInput(data){
@@ -313,10 +324,7 @@ function validateInput(data){
         errors.password = 'Password should be atleast 6 characters';
     }
 
-    else if(data.username){
 
-
-    }
 
     return{
         errors,
@@ -338,6 +346,23 @@ app.post('/api/client/register', function (req,res,next) {
         res.json(errors);
 
     }
+    else{
+        var userData = {
+            email: email,
+            username: username,
+            password: password,
+            passwordConf: passwordConf,
+        }
+
+        ClientUser.create(userData, function (error, user) {
+            if (error) {
+                return next(error);
+            } else {
+                console.log("inserted user");
+
+            }
+        });
+    }
 
 })
 
@@ -346,15 +371,18 @@ app.post('/api/client/login', function (req, res, next) {
 
 
     if (req.body.userdetails.email && req.body.userdetails.password) {
-        User.authenticate(req.body.logemail, req.body.logpassword, function (error, user) {
+        User.authenticate(req.body.userdetails.email, req.body.userdetails.password, function (error, user) {
             if (error || !user) {
                 var err = new Error('Wrong email or password.');
                 err.status = 401;
+                errors = {};
+                errors.password = "Wrong email or password";
+                //res.json(errors);
                 return next(err);
             } else {
                 req.session.userId = user._id;
                 //return res.redirect('/signup', { username: user.username, email:user.email, layout: 'layout.hbs' });
-                return res.redirect('/');
+
                 //return res.render('index', { username: user.username, email:user.email, layout: 'layout.hbs' });
             }
         });

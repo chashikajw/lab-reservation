@@ -72,6 +72,7 @@ class Shedule extends Component {
                                         var indents = [];
                                         indents.push(<thead>
                                         <tr>
+                                            <th scope="col">Date</th>
                                             <th scope="col">From</th>
                                             <th scope="col">To</th>
                                             <th scope="col">Reason</th>
@@ -84,6 +85,7 @@ class Shedule extends Component {
 
 
                                                     indents.push( <tr>
+                                                        <td >{this.state.bookings[i].Date}</td>
                                                         <td >{this.state.bookings[i].timefrom}.00</td>
                                                         <td>{this.state.bookings[i].timeto}.00</td>
                                                         <td>{this.state.bookings[i].reason}</td>
@@ -93,6 +95,7 @@ class Shedule extends Component {
 
                                                 }else{
                                                     indents.push( <tr>
+                                                        <td >{this.state.bookings[i].Date}</td>
                                                         <td >{this.state.bookings[i].timefrom}.00</td>
                                                         <td>{this.state.bookings[i].timeto}.00</td>
                                                         <td>{this.state.bookings[i].reason}</td>

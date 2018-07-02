@@ -38,8 +38,10 @@ class Home extends Component {
                     </div>
                     <div className="col-sm-10">
 
-                        < CalendarC/>
-                        <div id = "shed" className="col-sm-6">
+                            < CalendarC/>
+
+
+                        <div id = "shed" className="col-sm-7">
 
                             <SearchForm/>
                             <Shedule/>
